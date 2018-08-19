@@ -9,7 +9,7 @@
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="@color/theme_accent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -76,6 +76,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 android:layout_gravity="bottom"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 />
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -85,6 +86,7 @@
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <TextView
