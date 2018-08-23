@@ -1,20 +1,22 @@
 package com.example.xyzreader.ui;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
@@ -40,8 +42,10 @@ import java.util.GregorianCalendar;
  * either contained in a {@link ArticleListActivity} in two-pane mode (on
  * tablets) or a {@link ArticleDetailActivity} on handsets.
  */
-public class ArticleDetailFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+
+// android:theme="@style/Theme.Bacon"
+public class ArticleDetailFragment extends Fragment
+        implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>{
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
@@ -62,6 +66,8 @@ public class ArticleDetailFragment extends Fragment implements
     private boolean mIsCard = false;
     private int mStatusBarFullOpacityBottom;
     private CollapsingToolbarLayout mCollapseToolBar;
+    private Toolbar mToolbar;
+    private AppCompatActivity mActivity;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -92,7 +98,7 @@ public class ArticleDetailFragment extends Fragment implements
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
 
-        mIsCard = getResources().getBoolean(R.bool.detail_is_card);
+        //mIsCard = getResources().getBoolean(R.bool.detail_is_card);
         mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
                 R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
@@ -110,7 +116,8 @@ public class ArticleDetailFragment extends Fragment implements
         // the fragment's onCreate may cause the same LoaderManager to be dealt to multiple
         // fragments because their mIndex is -1 (haven't been added to the activity yet). Thus,
         // we do this in onActivityCreated.
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0,null,this);
+
     }
 
     @Override
@@ -142,6 +149,8 @@ public class ArticleDetailFragment extends Fragment implements
 
         mStatusBarColorDrawable = new ColorDrawable(0);
 
+        mActivity = (AppCompatActivity) getActivity();
+
         mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -152,18 +161,18 @@ public class ArticleDetailFragment extends Fragment implements
             }
         });
 
-        //Possible Toolbar title reference:
-        //http://stackoverflow.com/a/32724422/906577
+        mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
+        mCollapseToolBar = (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing);
 
         toolBarTitle();
-
         bindViews();
+
         updateStatusBar();
         return mRootView;
     }
 
     private void toolBarTitle() {
-        mCollapseToolBar = (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing);
+
         AppBarLayout appBarLayout = (AppBarLayout) mRootView.findViewById(R.id.appbar_layout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
@@ -176,11 +185,13 @@ public class ArticleDetailFragment extends Fragment implements
                 }
                 if (scrollRange + verticalOffset == 0) {
                     mCollapseToolBar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-                    boolean test = mCollapseToolBar.isTitleEnabled();
+                    mCollapseToolBar.setTitleEnabled(true);
+                    mActivity.getSupportActionBar().setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+
                     isShow = true;
 
                 } else if(isShow) {
-                    mCollapseToolBar.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
+                    mCollapseToolBar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
                     isShow = false;
                 }
             }
@@ -199,7 +210,6 @@ public class ArticleDetailFragment extends Fragment implements
                     (int) (Color.blue(mMutedColor) * 0.9));
         }
         mStatusBarColorDrawable.setColor(color);
-//        mDrawInsetsFrameLayout.setInsetBackground(mStatusBarColorDrawable);
     }
 
     static float progress(float v, float min, float max) {
@@ -232,7 +242,6 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
-        TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
@@ -244,7 +253,12 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-            titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
+            mCollapseToolBar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
+            mCollapseToolBar.setTitleEnabled(true);
+            mActivity.setSupportActionBar(mToolbar);
+            mActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+            mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
                 bylineView.setText(Html.fromHtml(
@@ -289,17 +303,17 @@ public class ArticleDetailFragment extends Fragment implements
                     });
         } else {
             mRootView.setVisibility(View.GONE);
-            titleView.setText("N/A");
+            mCollapseToolBar.setTitle("N/A");
             bylineView.setText("N/A" );
             bodyView.setText("N/A");
         }
     }
 
+
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args){
         return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);
     }
-
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         if (!isAdded()) {
