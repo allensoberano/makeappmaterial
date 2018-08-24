@@ -1,6 +1,5 @@
 package com.example.xyzreader.ui;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,10 +7,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -124,79 +121,19 @@ public class ArticleDetailFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
-//        mDrawInsetsFrameLayout = (DrawInsetsFrameLayout)
-//                mRootView.findViewById(R.id.draw_insets_frame_layout);
-//        mDrawInsetsFrameLayout.setOnInsetsCallback(new DrawInsetsFrameLayout.OnInsetsCallback() {
-//            @Override
-//            public void onInsetsChanged(Rect insets) {
-//                mTopInset = insets.top;
-//            }
-//        });
-
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
-//        mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
-//            @Override
-//            public void onScrollChanged() {
-//                mScrollY = mScrollView.getScrollY();
-//                getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
-//                mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
-//                updateStatusBar();
-//            }
-//        });
-
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
         mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
-
         mStatusBarColorDrawable = new ColorDrawable(0);
 
         mActivity = (AppCompatActivity) getActivity();
 
-        mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                        .setType("text/plain")
-                        .setText("Some sample text")
-                        .getIntent(), getString(R.string.action_share)));
-            }
-        });
-
-        mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
-        mCollapseToolBar = (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing);
-
-        toolBarTitle();
         bindViews();
 
         updateStatusBar();
         return mRootView;
     }
 
-    private void toolBarTitle() {
-
-        AppBarLayout appBarLayout = (AppBarLayout) mRootView.findViewById(R.id.appbar_layout);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = true;
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    mCollapseToolBar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-                    mCollapseToolBar.setTitleEnabled(true);
-                    mActivity.getSupportActionBar().setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-
-                    isShow = true;
-
-                } else if(isShow) {
-                    mCollapseToolBar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-                    isShow = false;
-                }
-            }
-        });
-    }
 
     private void updateStatusBar() {
         int color = 0;
@@ -245,7 +182,8 @@ public class ArticleDetailFragment extends Fragment
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
-
+        mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
+        mCollapseToolBar = (CollapsingToolbarLayout) mRootView.findViewById(R.id.collapsing);
 
         bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
@@ -278,7 +216,8 @@ public class ArticleDetailFragment extends Fragment
                                 + "</font>"));
 
             }
-            //bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+
+
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).substring(0,1000).replaceAll("(\r\n|\n)", "<br />")));
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
