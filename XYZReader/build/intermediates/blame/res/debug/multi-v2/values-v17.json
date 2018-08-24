@@ -4,7 +4,7 @@
             "outputFile": "/Users/Allen/Documents/Udacity/makeappmaterial/XYZReader/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v17/values-v17.xml",
             "map": [
                 {
-                    "source": "/Users/Allen/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.4.0.aar/18eebf253214e9d96f6f2be18c685ac7/res/values-v17/values-v17.xml",
+                    "source": "/Users/Allen/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.4.0.aar/d4575ef18f53d795a07a2971605fa653/res/values-v17/values-v17.xml",
                     "from": {
                         "startLines": "2,5,9,12,15,18,22,26,29,32,35,39,42,46",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",

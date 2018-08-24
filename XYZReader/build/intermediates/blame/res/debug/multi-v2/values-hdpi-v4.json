@@ -4,7 +4,7 @@
             "outputFile": "/Users/Allen/Documents/Udacity/makeappmaterial/XYZReader/build/intermediates/incremental/mergeDebugResources/merged.dir/values-hdpi-v4/values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "/Users/Allen/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.4.0.aar/18eebf253214e9d96f6f2be18c685ac7/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "source": "/Users/Allen/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.4.0.aar/d4575ef18f53d795a07a2971605fa653/res/values-hdpi-v4/values-hdpi-v4.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

@@ -4,13 +4,32 @@
             "outputFile": "/Users/Allen/Documents/Udacity/makeappmaterial/XYZReader/build/intermediates/incremental/mergeDebugResources/merged.dir/values-land/values-land.xml",
             "map": [
                 {
-                    "source": "/Users/Allen/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.4.0.aar/18eebf253214e9d96f6f2be18c685ac7/res/values-land/values-land.xml",
+                    "source": "/Users/Allen/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.4.0.aar/d4575ef18f53d795a07a2971605fa653/res/values-land/values-land.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
                         "startOffsets": "55,125,189,260",
                         "endColumns": "69,63,70,67",
                         "endOffsets": "120,184,255,323"
+                    }
+                },
+                {
+                    "source": "/Users/Allen/.gradle/caches/transforms-1/files-1.1/design-25.4.0.aar/51fc774ea9e45a0d2bbb737faba461e7/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "232"
+                    },
+                    "to": {
+                        "startLines": "8",
+                        "startColumns": "4",
+                        "startOffsets": "438",
+                        "endLines": "11",
+                        "endColumns": "12",
+                        "endOffsets": "615"
                     }
                 },
                 {
@@ -28,25 +47,6 @@
                         "startOffsets": "328,386",
                         "endColumns": "57,51",
                         "endOffsets": "381,433"
-                    }
-                },
-                {
-                    "source": "/Users/Allen/.gradle/caches/transforms-1/files-1.1/design-25.4.0.aar/cda3810520a8fa07d887d20a55765c09/res/values-land/values-land.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endLines": "5",
-                        "endColumns": "12",
-                        "endOffsets": "232"
-                    },
-                    "to": {
-                        "startLines": "8",
-                        "startColumns": "4",
-                        "startOffsets": "438",
-                        "endLines": "11",
-                        "endColumns": "12",
-                        "endOffsets": "615"
                     }
                 }
             ]
